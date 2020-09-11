@@ -1,0 +1,24 @@
+{
+  "name": "captcha",
+  "version": "1.0.0",
+  "description": "生成图片验证码工具",
+  "main": "lib/index.js",
+  "author": "GuoJikun",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "npx webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GuoJikun/captcha.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "source-map-loader": "^1.1.0",
+    "ts-loader": "^8.0.3",
+    "typescript": "^4.0.2",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
