@@ -1,10 +1,4 @@
-import {
-  randomNum,
-  randomColor,
-  getBase,
-  createCode,
-  mergeObject,
-} from "./utils";
+import { randomNum, randomColor, getBase, createCode } from "./utils";
 
 interface opts {
   id: string;
@@ -28,7 +22,7 @@ export function GVerify(options: opts | string): any {
 
   if (Object.prototype.toString.call(options) === "[object Object]") {
     //判断传入参数类型
-    mergeObject(this.options, options);
+    Object.assign(this.options, options);
   } else {
     this.options.id = options;
   }
@@ -115,6 +109,7 @@ const prototype = Object.freeze({
       );
       ctx.fill();
     }
+    return canvas.toDataURL("image/png");
   },
 
   /**验证验证码**/

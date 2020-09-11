@@ -12,7 +12,7 @@ export default {
         code: "",
       };
 
-      if (Object.prototype.toString.call(options) === "[object Object]") {
+      if (Object.prototype.toString.call(options) == "[object Object]") {
         //判断传入参数类型
         for (var i in options) {
           //根据传入的参数，修改默认参数值
@@ -37,6 +37,8 @@ export default {
       _init: function () {
         var con = document.getElementById(this.options.id);
         var canvas = document.createElement("canvas");
+        /*this.options.width = con.offsetWidth > 0 ? con.offsetWidth : "100";
+    this.options.height = con.offsetHeight > 0 ? con.offsetHeight : "30";*/
         canvas.id = this.options.canvasId;
         canvas.width = this.options.width;
         canvas.height = this.options.height;
@@ -74,7 +76,10 @@ export default {
           var txt = txtArr[randomNum(0, txtArr.length)];
           this.options.code += txt;
           ctx.font = "20px SimHei";
+          //ctx.font = randomNum(this.options.height/2, this.options.height) + 'px SimHei'; //随机生成字体大小
           ctx.fillStyle = randomColor(50, 160); //随机生成字体颜色
+          /* ctx.shadowOffsetX = randomNum(-3, 3);
+     ctx.shadowOffsetY = randomNum(-3, 3);*/
           ctx.shadowBlur = randomNum(-3, 3);
           ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
           var x = (this.options.width / 5) * i;
