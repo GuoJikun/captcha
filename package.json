@@ -1,8 +1,22 @@
 {
-  "name": "captcha",
-  "version": "1.0.0",
+  "name": "gvcode",
+  "version": "1.0.4",
   "description": "生成图片验证码工具",
+  "keywords": [
+    "captcha",
+    "imageCode",
+    "code",
+    "varify",
+    "验证码",
+    "图片验证码",
+    "util",
+    "Verification Code"
+  ],
   "main": "lib/index.js",
+  "files": [
+    "lib",
+    "types"
+  ],
   "author": "GuoJikun",
   "license": "MIT",
   "private": false,

@@ -4,6 +4,9 @@ module.exports = {
   output: {
     filename: "index.js",
     path: __dirname + "/lib",
+    library: "captcha",
+    libraryTarget: "umd",
+    umdNamedDefine: true,
   },
 
   // Enable sourcemaps for debugging webpack's output.

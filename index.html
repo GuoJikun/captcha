@@ -13,9 +13,10 @@
       <img src="" alt="" />
     </div>
   </body>
+  <script src="./lib/index.js"></script>
   <script type="module">
     import _ from "./src/index.js";
-    console.log(_);
+    console.log(captcha.default({ type: "digital" }));
     _.getGVerify("test");
   </script>
 </html>

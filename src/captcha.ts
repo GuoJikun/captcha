@@ -1,61 +1,59 @@
-import { randomNum, randomColor, getBase, createCode } from "./utils";
+import { randomNum, randomColor, getBase, createCode, typeOf } from "./utils";
 
-interface opts {
-  id: string;
-  width?: string;
-  height?: string;
+export interface opts {
+  width?: number;
+  height?: number;
   type?: string;
-  code?: string;
+  len?: number;
 }
 
-export function GVerify(options: opts | string): any {
-  //创建一个图形验证码对象，接收options对象为参数
-  this.options = {
-    //默认options参数值
-    id: "", //容器Id
-    canvasId: "verifyCanvas", // canvas的ID
-    width: "100", // 默认canvas宽度
-    height: "30", // 默认canvas高度
-    type: "blend", // 图形验证码默认类型blend:数字字母混合类型、number:纯数字、letter:纯字母
-    code: "",
+export class GVerify {
+  // 创建一个图形验证码对象，接收opts对象为参数
+  options: opts = {
+    width: 100,
+    height: 30,
+    len: 4,
   };
+  instance: HTMLCanvasElement;
+  private baseChart: Array<string>;
+  imageData: string;
+  code: string;
 
-  if (Object.prototype.toString.call(options) === "[object Object]") {
-    //判断传入参数类型
-    Object.assign(this.options, options);
-  } else {
-    this.options.id = options;
+  constructor(opts?: opts) {
+    if (opts !== undefined) {
+      if (typeOf(opts) === "object") {
+        // 判断传入参数类型
+        Object.assign(this.options, opts);
+      } else {
+        throw `[warn]: Invalid opts: type check failed for opts "type". Expected Object with value "${opts}", got ${typeOf(
+          opts
+        )} with value ${opts}.`;
+      }
+    }
+    this.baseChart = getBase(this.options.type);
+    this.code = createCode(this.baseChart, this.options.len);
+    this._init();
   }
+  // 版本号
+  version: "1.0.4";
 
-  const base = getBase();
-  this.options.code = createCode(base, 4);
-
-  this._init();
-  this.refresh();
-}
-
-const prototype = Object.freeze({
-  /**版本号**/
-  version: "1.0.0",
-
-  /**初始化方法**/
-  _init: function () {
-    var con = document.getElementById(this.options.id);
-    var canvas = document.createElement("canvas");
-    canvas.id = this.options.canvasId;
+  // 初始化方法
+  private _init() {
+    let canvas = document.createElement("canvas");
     canvas.width = this.options.width;
     canvas.height = this.options.height;
-    canvas.style.cursor = "pointer";
-    canvas.innerHTML = "您的浏览器版本不支持canvas";
-    con.appendChild(canvas);
-    var parent = this;
-    canvas.onclick = function () {
-      parent.refresh(canvas);
-    };
-  },
+    // canvas.hidden = true;
+    // document.body.appendChild(canvas);
+    this.instance = canvas;
+    this.imageData = this.createCode(canvas);
+  }
+  refresh() {
+    this.code = createCode(this.baseChart, this.options.len);
+    return this.createCode(this.instance);
+  }
 
   /**生成验证码**/
-  refresh: function (canvas: HTMLCanvasElement) {
+  private createCode(canvas: HTMLCanvasElement) {
     if (canvas.getContext) {
       var ctx = canvas.getContext("2d");
     }
@@ -65,7 +63,7 @@ const prototype = Object.freeze({
     ctx.fillRect(0, 0, this.options.width, this.options.height);
 
     for (var i = 1; i <= 4; i++) {
-      var txt = this.options.code[i - 1];
+      var txt = this.code[i - 1];
 
       ctx.font = "20px SimHei";
       ctx.fillStyle = randomColor(50, 160); //随机生成字体颜色
@@ -109,19 +107,21 @@ const prototype = Object.freeze({
       );
       ctx.fill();
     }
-    return canvas.toDataURL("image/png");
-  },
+    const imageData = canvas.toDataURL("image/png");
+    return imageData;
+  }
 
   /**验证验证码**/
-  validate: function (code: string) {
+  validate(code: string) {
     var verifyCode = code.toLowerCase();
-    var v_code = this.options.code.toLowerCase();
+    var v_code = this.code.toLowerCase();
     if (verifyCode == v_code) {
       return true;
     } else {
       return false;
     }
-  },
-});
-
-GVerify.prototype = prototype;
+  }
+  private value() {
+    return this.imageData;
+  }
+}
